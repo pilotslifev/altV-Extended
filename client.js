@@ -1,5 +1,5 @@
-import alt from 'alt';
-import * as native from 'natives';
+import * as alt from "alt";
+import * as native from "natives";
 
 // States
 var blips = new Map();
@@ -142,7 +142,7 @@ export class HelpText {
 			helpText = undefined;
 		}
 
-		native.beginTextCommandDisplayHelp('STRING');
+		native.beginTextCommandDisplayHelp("STRING");
 		native.addTextComponentSubstringPlayerName(this.text);
 		native.endTextCommandDisplayHelp(0, false, true, 0);
 	}
@@ -189,7 +189,7 @@ export class Loading {
 
 		loading = this;
 		native.removeLoadingPrompt();
-		native.beginTextCommandBusyString('STRING');
+		native.beginTextCommandBusyString("STRING");
 		native.addTextComponentSubstringPlayerName(this.text);
 		native.endTextCommandBusyString(this.type);
 	}
@@ -330,19 +330,19 @@ class ContextMenu {
 		if (outline)   
 			native.setTextOutline();
 
-		native.beginTextCommandDisplayText('STRING');
+		native.beginTextCommandDisplayText("STRING");
 		native.addTextComponentSubstringPlayerName(text);
 		native.endTextCommandDisplayText(xPos, yPos  - (lineHeight / 2));
 	}
 }
 
 // Chatbox Handler
-alt.on('keydown', (key) => {
+alt.on("keydown", (key) => {
 	if ((key == 0x1B && isChatOpen) || (key == 0x0D && isChatOpen)) {
 		isChatOpen = false;
 	}
 
-	if (key == 'T'.charCodeAt(0) && !isChatOpen) {
+	if (key == "T".charCodeAt(0) && !isChatOpen) {
 		isChatOpen = true;
 	}
 
@@ -357,7 +357,7 @@ alt.on('keydown', (key) => {
 	});
 });
 
-alt.on('keyup', (key) => {
+alt.on("keyup", (key) => {
 	if (isChatOpen)
 		return;
 
@@ -369,7 +369,7 @@ alt.on('keyup', (key) => {
 	});
 });
 
-alt.on('disconnect', () => {
+alt.on("disconnect", () => {
 	// Clear old blips.
 	for (var [value] of Object.entries(blips)) {
 		native.removeBlip(value);
@@ -420,26 +420,26 @@ alt.everyTick(() => {
 });
 
 // forwardVector
-alt.onServer('getForwardVector', () => {
+alt.onServer("getForwardVector", () => {
 	var forward = native.getEntityForwardVector(alt.Player.local.scriptID);
-	alt.emitServer('getForwardVector', forward);
+	alt.emitServer("getForwardVector", forward);
 });
 
 // groundPos
-alt.onServer('getGroundZFrom3DCoord', (pos) => {
+alt.onServer("getGroundZFrom3DCoord", (pos) => {
 	var z = native.getGroundZFor3dCoord(pos.x, pos.y, pos.z, undefined, true);
 	alt.log(JSON.stringify(z));
-	alt.emitServer('getGroundZFrom3DCoord', z);
+	alt.emitServer("getGroundZFrom3DCoord", z);
 });
 
 // Create a new blip.
-alt.onServer('createLocalBlip', (pos, sprite, color, scale, name, shortRange, uniqueID) => {
+alt.onServer("createLocalBlip", (pos, sprite, color, scale, name, shortRange, uniqueID) => {
 	let blip = native.addBlipForCoord(pos.x, pos.y, pos.z);
 	native.setBlipSprite(blip, sprite);
 	native.setBlipColour(blip, color);
 	native.setBlipScale(blip, scale);
 	native.setBlipAsShortRange(blip, shortRange);
-	native.beginTextCommandSetBlipName('STRING');
+	native.beginTextCommandSetBlipName("STRING");
 	native.addTextComponentSubstringPlayerName(name);
 	native.endTextCommandSetBlipName(blip);
 
@@ -456,7 +456,7 @@ alt.onServer('createLocalBlip', (pos, sprite, color, scale, name, shortRange, un
 });
 
 // Delete a blip by uniqueID
-alt.onServer('deleteLocalBlip', (uniqueID) => {
+alt.onServer("deleteLocalBlip", (uniqueID) => {
 	if (blips[uniqueID] !== undefined) {
 		native.removeBlip(blips[uniqueID]);
 		blips.delete(uniqueID);
@@ -464,14 +464,14 @@ alt.onServer('deleteLocalBlip', (uniqueID) => {
 });
 
 // Create a new Marker
-alt.onServer('createLocalMarker', (type, pos, dir, rot, scale, color, enterColor, deleteOnEnter, range, uniqueID) => {
+alt.onServer("createLocalMarker", (type, pos, dir, rot, scale, color, enterColor, deleteOnEnter, range, uniqueID) => {
     
     
 	new Marker(type, pos, dir, rot, scale, color, enterColor, deleteOnEnter, range, uniqueID);
 });
 
 // Delete a marker by uniqueID.
-alt.onServer('deleteLocalMarker', (uniqueID) => {
+alt.onServer("deleteLocalMarker", (uniqueID) => {
 	if (markers.has(uniqueID)) {
 		markers.get(uniqueID).markForDelete = true;
 		markers.delete(uniqueID);
@@ -479,20 +479,20 @@ alt.onServer('deleteLocalMarker', (uniqueID) => {
 });
 
 // Show notification for player:
-alt.onServer('showNotification', (imageName, headerMsg, detailsMsg, message) => {
-	native.beginTextCommandThefeedPost('STRING');
+alt.onServer("showNotification", (imageName, headerMsg, detailsMsg, message) => {
+	native.beginTextCommandThefeedPost("STRING");
 	native.addTextComponentSubstringPlayerName(message);
-	native.setNotificationMessageClanTag(imageName.toUpperCase(), imageName.toUpperCase(), false, 4, headerMsg, detailsMsg, 1.0, '');
+	native.setNotificationMessageClanTag(imageName.toUpperCase(), imageName.toUpperCase(), false, 4, headerMsg, detailsMsg, 1.0, "");
 	native.drawNotification(false, false);
 });
 
 // Freeze a player
-alt.onServer('freezePlayer', (state) => {
+alt.onServer("freezePlayer", (state) => {
 	native.freezeEntityPosition(alt.Player.local.scriptID, state);
 });
 
 // Fade Out Screen
-alt.onServer('fadeOutScreen', (state, time) => {
+alt.onServer("fadeOutScreen", (state, time) => {
 	if (state) {
 		native.doScreenFadeOut(time);
 	} else {
@@ -501,7 +501,7 @@ alt.onServer('fadeOutScreen', (state, time) => {
 });
 
 // Blur Out Screen
-alt.onServer('blurOutScreen', (state, time) => {
+alt.onServer("blurOutScreen", (state, time) => {
 	if (state) {
 		native.transitionToBlurred(time);
 	} else {
@@ -510,27 +510,27 @@ alt.onServer('blurOutScreen', (state, time) => {
 });
 
 // Show Cursor
-alt.onServer('showCursor', (state) => {
+alt.onServer("showCursor", (state) => {
 	ShowCursor(state);
 });
 
-alt.onServer('drawHud', (state) => {
+alt.onServer("drawHud", (state) => {
 	DrawHUD(state);
 });
 
-alt.onServer('displayHelpText', (text, time) => {
+alt.onServer("displayHelpText", (text, time) => {
 	new HelpText(text, time);
 });
 
-alt.onServer('displaySubtitle', (text, time) => {
+alt.onServer("displaySubtitle", (text, time) => {
 	new Subtitle(text, time);
 });
 
-alt.onServer('showLoading', (text, time, type, toggled) => {
+alt.onServer("showLoading", (text, time, type, toggled) => {
 	new Loading(text, time, type, toggled);
 });
 
-alt.onServer('displayMessageAboveHead', (player, message, timeInMS, r, g, b, a) => {
+alt.onServer("displayMessageAboveHead", (player, message, timeInMS, r, g, b, a) => {
 	messagesAboveHead.push({ player, message, time: Date.now() + timeInMS, completed: false, r, g, b, a});
 });
 
@@ -616,7 +616,7 @@ export function CreateContextMenu(pos, itemHeight, itemWidth) {
 
 export function AppendContextMenu(item, eventName) {
 	if (contextMenu == undefined) {
-		alt.log('====> Context Menu is UNDEFINED.');
+		alt.log("====> Context Menu is UNDEFINED.");
 		return;
 	}
 
@@ -792,7 +792,7 @@ function degToRad(deg) {
  */
 export function drawText(msg, x, y, scale, fontType, r, g, b, a, useOutline = true, useDropShadow = true, layer = 0) {
 	native.setUiLayer(layer);
-	native.beginTextCommandDisplayText('STRING');
+	native.beginTextCommandDisplayText("STRING");
 	native.addTextComponentSubstringPlayerName(msg);
 	native.setTextFont(fontType);
 	native.setTextScale(1, scale);
@@ -815,7 +815,7 @@ alt.setInterval(() => {
 	while(i--) {
 		if (messagesAboveHead[i].completed) {
 			messagesAboveHead.splice(i, 1);
-			alt.log('Cleaned up message above head.');
+			alt.log("Cleaned up message above head.");
 			continue;
 		}
 	}

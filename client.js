@@ -480,10 +480,16 @@ alt.onServer("deleteLocalMarker", (uniqueID) => {
 
 // Show notification for player:
 alt.onServer("showNotification", (imageName, headerMsg, detailsMsg, message) => {
+	/*native.beginTextCommandThefeedPost("STRING");
+	native.addTextComponentSubstringPlayerName(message);
+	native.setNotificationMessageClanTag(imageName.toUpperCase(), imageName.toUpperCase(), false, 4, headerMsg, detailsMsg, 1.0, "");
+	native.drawNotification(false, false);*/
+
 	native.beginTextCommandThefeedPost("STRING");
 	native.addTextComponentSubstringPlayerName(message);
-	//native.setNotificationMessageClanTag(imageName.toUpperCase(), imageName.toUpperCase(), false, 4, headerMsg, detailsMsg, 1.0, "");
-	native.endTextCommandThefeedPostTicker(false, true);
+	//if (backgroundColor != null) native.thefeedSetNextPostBackgroundColor(backgroundColor);
+	if (imageName != null) native.endTextCommandThefeedPostMessagetextTu(imageName.toUpperCase(), imageName.toUpperCase(), false, 4, headerMsg, detailsMsg, 1.0);
+	return native.endTextCommandThefeedPostTicker(false, true);
 });
 
 // Freeze a player

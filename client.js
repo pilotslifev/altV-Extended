@@ -384,7 +384,7 @@ alt.on("disconnect", () => {
 
 	// Turn off Screen Fades
 	native.doScreenFadeIn(1);
-	native.transitionFromBlurred(1);
+	native.triggerScreenblurFadeIn(1);
 });
 
 alt.everyTick(() => {
@@ -509,9 +509,9 @@ alt.onServer("fadeOutScreen", (state, time) => {
 // Blur Out Screen
 alt.onServer("blurOutScreen", (state, time) => {
 	if (state) {
-		native.transitionToBlurred(time);
+		native.triggerScreenblurFadeIn(time);
 	} else {
-		native.transitionFromBlurred(time);
+		native.triggerScreenblurFadeOut(time);
 	}
 });
 
